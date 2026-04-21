@@ -10,3 +10,6 @@ export type PromptItem = {
   tags: string[];
   gradient: string;
 };
+
+// Re-export API types
+export type { ApiKey, ApiKeyProvider, ApiKeyContextType } from './api';
