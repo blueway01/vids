@@ -12,4 +12,4 @@ export type PromptItem = {
 };
 
 // Re-export API types
-export type { ApiKey, ApiKeyProvider, ApiKeyContextType } from './api';
+export type { ApiKey, ApiProvider, ApiKeyContextType } from './api';
