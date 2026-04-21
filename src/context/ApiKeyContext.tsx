@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect } from 'react';
-import { ApiKey, ApiKeyProvider, ApiKeyContextType } from '@/types/api';
+import { ApiKey, ApiProvider, ApiKeyContextType } from '@/types/api';
 
 const ApiKeyContext = createContext<ApiKeyContextType | undefined>(undefined);
 
@@ -35,7 +35,7 @@ export const ApiKeyProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   }, [apiKeys, isLoaded]);
 
-  const addApiKey = (name: string, key: string, provider: ApiKeyProvider) => {
+  const addApiKey = (name: string, key: string, provider: ApiProvider) => {
     const newApiKey: ApiKey = {
       id: Date.now().toString(),
       name,
@@ -59,7 +59,7 @@ export const ApiKeyProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     );
   };
 
-  const getActiveApiKey = (provider: ApiKeyProvider): ApiKey | null => {
+  const getActiveApiKey = (provider: ApiProvider): ApiKey | null => {
     return apiKeys.find(key => key.provider === provider && key.isActive) || null;
   };
 

@@ -1,19 +1,19 @@
-export type ApiKeyProvider = 'google-veo' | 'custom';
+export type ApiProvider = 'google' | 'openai' | 'anthropic';
 
-export type ApiKey = {
+export interface ApiKey {
   id: string;
   name: string;
-  provider: ApiKeyProvider;
+  provider: ApiProvider;
   key: string;
   createdAt: string;
   lastUsed?: string;
   isActive: boolean;
-};
+}
 
-export type ApiKeyContextType = {
+export interface ApiKeyContextType {
   apiKeys: ApiKey[];
-  addApiKey: (name: string, key: string, provider: ApiKeyProvider) => void;
+  addApiKey: (name: string, key: string, provider: ApiProvider) => void;
   deleteApiKey: (id: string) => void;
   updateApiKey: (id: string, updates: Partial<ApiKey>) => void;
-  getActiveApiKey: (provider: ApiKeyProvider) => ApiKey | null;
-};
+  getActiveApiKey: (provider: ApiProvider) => ApiKey | null;
+}

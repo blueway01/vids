@@ -2,18 +2,18 @@
 
 import { useState } from 'react';
 import { useApiKey } from '@/context/ApiKeyContext';
-import { ApiKeyProvider } from '@/types/api';
+import { ApiProvider } from '@/types/api';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, X, Eye, EyeOff, Trash2, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export const ApiKeyManager = () => {
-  const { apiKeys, addApiKey, deleteApiKey, updateApiKey } = useApiKey();
+  const { apiKeys, addApiKey, deleteApiKey } = useApiKey();
   const [isOpen, setIsOpen] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [name, setName] = useState('');
   const [key, setKey] = useState('');
-  const [provider, setProvider] = useState<ApiKeyProvider>('google-veo');
+  const [provider, setProvider] = useState<ApiProvider>('google');
   const [visibleKeys, setVisibleKeys] = useState<Set<string>>(new Set());
 
   const handleAddKey = (e: React.FormEvent) => {
@@ -50,13 +50,13 @@ export const ApiKeyManager = () => {
             initial={{ opacity: 0, scale: 0.95, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
-            className="absolute bottom-16 right-0 w-96 bg-slate-900 border border-slate-700 rounded-lg shadow-xl p-6 max-h-96 overflow-y-auto"
+            className="absolute bottom-16 right-0 w-96 bg-zinc-900 border border-white/10 rounded-3xl shadow-2xl p-6 max-h-[32rem] overflow-y-auto backdrop-blur-xl"
           >
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-white">API Keys</h3>
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-bold text-white tracking-tight">API Keys</h3>
               <button
                 onClick={() => setIsOpen(false)}
-                className="text-slate-400 hover:text-white transition"
+                className="p-2 rounded-full hover:bg-white/10 text-zinc-400 hover:text-white transition-colors"
               >
                 <X size={20} />
               </button>
@@ -69,61 +69,75 @@ export const ApiKeyManager = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   onSubmit={handleAddKey}
-                  className="space-y-4 mb-4 p-4 bg-slate-800 rounded-lg"
+                  className="space-y-4 mb-6 p-4 bg-white/5 border border-white/10 rounded-2xl"
                 >
-                  <input
-                    type="text"
-                    placeholder="Key name (e.g., 'My Veo API')"
-                    value={name}
-                    onChange={e => setName(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded text-white placeholder-slate-400 focus:outline-none focus:border-blue-500"
-                  />
-                  <select
-                    value={provider}
-                    onChange={e => setProvider(e.target.value as ApiKeyProvider)}
-                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded text-white focus:outline-none focus:border-blue-500"
-                  >
-                    <option value="google-veo">Google Veo API</option>
-                    <option value="custom">Custom API</option>
-                  </select>
-                  <textarea
-                    placeholder="API Key"
-                    value={key}
-                    onChange={e => setKey(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded text-white placeholder-slate-400 focus:outline-none focus:border-blue-500 resize-none"
-                    rows={3}
-                  />
-                  <div className="flex gap-2">
+                  <div className="space-y-1">
+                    <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-500 ml-1">Key Name</label>
+                    <input
+                      type="text"
+                      placeholder="e.g., Google Cloud v1"
+                      value={name}
+                      onChange={e => setName(e.target.value)}
+                      className="w-full px-3 py-2.5 bg-black/40 border border-white/10 rounded-xl text-white placeholder-zinc-600 focus:outline-none focus:border-primary/50 text-sm"
+                    />
+                  </div>
+                  
+                  <div className="space-y-1">
+                    <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-500 ml-1">Provider</label>
+                    <select
+                      value={provider}
+                      onChange={e => setProvider(e.target.value as ApiProvider)}
+                      className="w-full px-3 py-2.5 bg-black/40 border border-white/10 rounded-xl text-white focus:outline-none focus:border-primary/50 text-sm appearance-none"
+                    >
+                      <option value="google">Google Gemini / Veo</option>
+                      <option value="openai">OpenAI</option>
+                      <option value="anthropic">Anthropic Claude</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-500 ml-1">API Key Content</label>
+                    <textarea
+                      placeholder="Paste your key here..."
+                      value={key}
+                      onChange={e => setKey(e.target.value)}
+                      className="w-full px-3 py-2.5 bg-black/40 border border-white/10 rounded-xl text-white placeholder-zinc-600 focus:outline-none focus:border-primary/50 text-sm font-mono resize-none h-24"
+                    />
+                  </div>
+
+                  <div className="flex gap-2 pt-2">
                     <button
                       type="submit"
-                      className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition flex items-center justify-center gap-2"
+                      className="flex-1 py-2.5 bg-primary text-white rounded-xl font-bold text-sm tracking-tight hover:brightness-110 transition-all flex items-center justify-center gap-2"
                     >
-                      <Check size={16} /> Add
+                      <Check size={16} /> 保存する
                     </button>
                     <button
                       type="button"
                       onClick={() => setShowForm(false)}
-                      className="flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded font-medium transition"
+                      className="flex-1 py-2.5 bg-white/5 hover:bg-white/10 text-white rounded-xl font-bold text-sm transition-all"
                     >
-                      Cancel
+                      キャンセル
                     </button>
                   </div>
                 </motion.form>
               ) : (
                 <button
                   onClick={() => setShowForm(true)}
-                  className="w-full mb-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition flex items-center justify-center gap-2"
+                  className="w-full mb-6 px-4 py-3 bg-white text-black rounded-2xl font-black text-sm tracking-tight hover:bg-zinc-200 transition-all flex items-center justify-center gap-2 shadow-lg shadow-white/5"
                 >
-                  <Plus size={16} /> Add API Key
+                  <Plus size={18} /> 新しいAPIキーを追加
                 </button>
               )}
             </AnimatePresence>
 
             <div className="space-y-3">
               {apiKeys.length === 0 ? (
-                <p className="text-slate-400 text-sm text-center py-4">
-                  No API keys added yet
-                </p>
+                <div className="text-center py-12 px-4 border border-dashed border-white/10 rounded-3xl">
+                  <p className="text-zinc-500 text-sm">
+                    APIキーが未登録です
+                  </p>
+                </div>
               ) : (
                 apiKeys.map(apiKey => (
                   <motion.div
@@ -131,38 +145,37 @@ export const ApiKeyManager = () => {
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -10 }}
-                    className="p-3 bg-slate-800 border border-slate-700 rounded"
+                    className="p-4 bg-white/5 border border-white/10 rounded-2xl group/item"
                   >
-                    <div className="flex items-start justify-between gap-2 mb-2">
+                    <div className="flex items-start justify-between gap-2 mb-3">
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-white text-sm truncate">
+                        <p className="font-bold text-white text-sm truncate tracking-tight">
                           {apiKey.name}
                         </p>
-                        <p className="text-xs text-slate-400">
-                          {apiKey.provider === 'google-veo'
-                            ? 'Google Veo API'
-                            : 'Custom API'}
+                        <p className="text-[10px] uppercase tracking-widest font-black text-primary mt-0.5">
+                          {apiKey.provider}
                         </p>
                       </div>
                       <button
                         onClick={() => deleteApiKey(apiKey.id)}
-                        className="text-slate-400 hover:text-red-400 transition"
+                        className="p-1.5 rounded-lg text-zinc-600 hover:text-red-400 hover:bg-red-400/10 transition-all opacity-0 group-hover/item:opacity-100"
+                        title="キーを削除"
                       >
                         <Trash2 size={16} />
                       </button>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <code className="flex-1 px-2 py-1 bg-slate-700 rounded text-xs text-slate-300 font-mono overflow-hidden text-ellipsis">
+                    <div className="flex items-center gap-2 mt-auto">
+                      <code className="flex-1 px-3 py-1.5 bg-black/40 rounded-lg text-[10px] text-zinc-400 font-mono overflow-hidden text-ellipsis border border-white/5">
                         {visibleKeys.has(apiKey.id) ? apiKey.key : maskKey(apiKey.key)}
                       </code>
                       <button
                         onClick={() => toggleKeyVisibility(apiKey.id)}
-                        className="text-slate-400 hover:text-white transition"
+                        className="p-1.5 rounded-lg text-zinc-500 hover:text-white transition-colors"
                       >
                         {visibleKeys.has(apiKey.id) ? (
-                          <EyeOff size={16} />
+                          <EyeOff size={14} />
                         ) : (
-                          <Eye size={16} />
+                          <Eye size={14} />
                         )}
                       </button>
                     </div>
@@ -179,13 +192,13 @@ export const ApiKeyManager = () => {
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          'w-14 h-14 rounded-full shadow-lg font-bold text-lg transition',
+          'w-16 h-16 rounded-full shadow-2xl font-bold flex items-center justify-center transition-all duration-500',
           isOpen
-            ? 'bg-slate-700 text-white'
-            : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-xl'
+            ? 'bg-zinc-800 text-white rotate-45 border border-white/20'
+            : 'bg-primary text-white hover:shadow-primary/20'
         )}
       >
-        <Plus size={24} className="mx-auto" />
+        <Plus size={28} />
       </motion.button>
     </div>
   );
