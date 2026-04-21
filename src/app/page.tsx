@@ -22,7 +22,7 @@ export default function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {PROMPTS.map((prompt, index) => (
-            <PromptCard key={index} prompt={prompt} />
+            <PromptCard key={index} item={prompt} />
           ))}
         </div>
       </section>
