@@ -48,9 +48,18 @@ export const PromptBuilder = () => {
       const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=ja&tl=en&dt=t&q=${encodeURIComponent(text)}`;
       const res = await fetch(url);
       const data = await res.json();
-      if (data && data[0] && data[0][0] && data[0][0][0]) return data[0][0][0];
+      
+      // Google翻訳のレスポンスは [ [[translated_text, original_text...], ...], ... ] という形式
+      // 複数の文章がある場合、data[0]の中に複数のセグメントが含まれるため、それらを結合する
+      if (data && data[0]) {
+        return data[0]
+          .map((item: any) => item[0])
+          .filter((item: any) => typeof item === 'string')
+          .join('');
+      }
       return text;
     } catch (error) {
+      console.error('Translation error:', error);
       return text;
     } finally {
       setIsTranslating(false);
@@ -121,22 +130,23 @@ export const PromptBuilder = () => {
 
         {/* Translation and Result Area */}
         <div className="space-y-6">
-          <div className="relative">
-             <input 
-               type="text" 
+          <div className="relative group">
+             <textarea 
                value={customJpInput}
                onChange={(e) => setCustomJpInput(e.target.value)}
                placeholder="ここから更に日本語の文章で指示を追加できます..."
-               className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm focus:border-primary/50 outline-none"
+               className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-6 text-sm focus:border-primary/50 outline-none transition-all group-hover:bg-white/10 min-h-[120px] resize-none"
              />
-             <button 
-               onClick={handleAddTranslation}
-               disabled={!customJpInput || isTranslating}
-               className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 transition-all text-xs font-bold disabled:opacity-50 min-w-[140px] justify-center"
-             >
-               {isTranslating ? <Loader2 size={14} className="animate-spin" /> : <Wand2 size={14} />}
-               翻訳して追加
-             </button>
+             <div className="absolute right-4 bottom-4">
+               <button 
+                 onClick={handleAddTranslation}
+                 disabled={!customJpInput || isTranslating}
+                 className="flex items-center gap-2 px-6 py-2.5 bg-primary text-white rounded-xl hover:bg-primary/90 transition-all text-xs font-bold disabled:opacity-50 min-w-[140px] justify-center shadow-lg shadow-primary/20"
+               >
+                 {isTranslating ? <Loader2 size={14} className="animate-spin" /> : <Wand2 size={14} />}
+                 翻訳して追加
+               </button>
+             </div>
           </div>
 
           <div className="bg-black/95 border border-primary/40 rounded-2xl p-6 relative group overflow-hidden border-l-8">

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ApiKeyProvider } from "@/context/ApiKeyContext";
+import { BannerAds } from "@/components/BannerAds";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,9 +31,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja" className="dark">
-      <body className={`${inter.className} bg-[#020202] text-white antialiased selection:bg-primary/30`}>
+    <body className={`${inter.className} bg-[#020202] text-white antialiased selection:bg-primary/30`}>
         <ApiKeyProvider>
+          <BannerAds position="top" />
           {children}
+          <BannerAds position="bottom" />
         </ApiKeyProvider>
       </body>
     </html>
