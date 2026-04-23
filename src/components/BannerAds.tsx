@@ -17,7 +17,7 @@ export const BannerAds = ({ position }: BannerProps) => {
   return (
     <div
       className={cn(
-        "w-full p-3 md:px-5 relative shadow-lg z-[9999] transition-all duration-300",
+        "w-full p-3 md:px-5 relative shadow-lg z-[9999] animate-in fade-in slide-in-from-top-4 duration-500",
         // ハンドオーバーの指定通りのグラデーション色を使用
         "bg-gradient-to-br from-[#667eea] to-[#764ba2]",
         position === 'top' ? "sticky top-0" : "fixed bottom-0 left-0"
@@ -25,13 +25,13 @@ export const BannerAds = ({ position }: BannerProps) => {
     >
       <button
         onClick={() => setIsVisible(false)}
-        className="absolute top-1/2 -translate-y-1/2 right-2 md:right-4 bg-white/90 hover:bg-white rounded-full w-7 h-7 flex items-center justify-center text-[#333] transition-all hover:scale-110 z-[10000] shadow-sm"
+        className="absolute top-2 right-2 md:top-1/2 md:-translate-y-1/2 md:right-4 bg-white/90 hover:bg-white rounded-full w-7 h-7 flex items-center justify-center text-[#333] transition-all hover:scale-110 z-[10000] shadow-sm"
         aria-label="バナーを閉じる"
       >
-        <X size={18} />
+        <X size={16} />
       </button>
 
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-4 items-center justify-center">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-3 md:gap-4 items-center justify-center">
         {/* 製品 1: Bookmark Manager */}
         <a
           href="https://ikoibito.vercel.app/index_ja.html"
@@ -42,14 +42,14 @@ export const BannerAds = ({ position }: BannerProps) => {
           <div className="flex items-center gap-3 flex-1">
             <div className="w-10 h-10 md:w-12 md:h-12 relative flex-shrink-0">
               <Image
-                src="/bookmark-icon.png"
+                src="/icon.png"
                 alt="Bookmark Manager"
                 fill
                 className="rounded-lg object-cover"
               />
             </div>
             <div className="flex-1">
-              <h3 className="text-sm font-bold leading-tight">Bookmark Manager & Link Checker Pro</h3>
+              <h3 className="text-[13px] md:text-sm font-bold leading-tight">Bookmark Manager & Link Checker Pro</h3>
               <p className="text-[11px] md:text-xs text-[#666]">ブックマークを効率的に管理・整理</p>
             </div>
           </div>
@@ -75,7 +75,7 @@ export const BannerAds = ({ position }: BannerProps) => {
               />
             </div>
             <div className="flex-1">
-              <h3 className="text-sm font-bold leading-tight">YouTube SidePlayer Pro</h3>
+              <h3 className="text-[13px] md:text-sm font-bold leading-tight">YouTube SidePlayer Pro</h3>
               <p className="text-[11px] md:text-xs text-[#666]">YouTubeをサイドで快適再生</p>
             </div>
           </div>

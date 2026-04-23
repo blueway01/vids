@@ -175,8 +175,7 @@ export const PROMPTS: PromptItem[] = [
     id: 'corp-4',
     title: '自動化される物流倉庫',
     category: 'Corporate',
-    englishPrompt: 'Wide angle tracking shot, multiple orange autonomous robots moving quickly and precisely through 
-    a vast modern logistics warehouse. Motion blur on robots, static industrial shelving, bright cool lighting, high-tech operation.',
+    englishPrompt: 'Wide angle tracking shot, multiple orange autonomous robots moving quickly and precisely through a vast modern logistics warehouse. Motion blur on robots, static industrial shelving, bright cool lighting, high-tech operation.',
     japaneseDescription: '整然と動く物流ロボットたち。自動化や効率化、DXをテーマにした動画に。',
     vidsTip: '「Tracking shot」を使うことで、広大な空間とスピード感を同時に表現できます。',
     tags: ['DX', 'ロボット', '物流'],
