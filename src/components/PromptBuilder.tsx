@@ -1,10 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Sparkles, Copy, ChevronDown, Wand2, AlertCircle, Loader2 } from 'lucide-react';
 import { PROMPT_OPTIONS } from '@/data/options';
-import { cn } from '@/lib/utils';
 
 export const PromptBuilder = () => {
   const [selections, setSelections] = useState({
@@ -53,8 +51,8 @@ export const PromptBuilder = () => {
       // 複数の文章がある場合、data[0]の中に複数のセグメントが含まれるため、それらを結合する
       if (data && data[0]) {
         return data[0]
-          .map((item: any) => item[0])
-          .filter((item: any) => typeof item === 'string')
+          .map((item: string[]) => item[0])
+          .filter((item: unknown) => typeof item === 'string')
           .join('');
       }
       return text;
@@ -116,7 +114,7 @@ export const PromptBuilder = () => {
               </label>
               <div className="relative group">
                 <select 
-                  value={(selections as any)[key]}
+                  value={(selections as Record<string, string>)[key]}
                   onChange={(e) => setSelections({...selections, [key]: e.target.value})}
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm appearance-none focus:border-primary/50 outline-none transition-all cursor-pointer hover:bg-white/10"
                 >
